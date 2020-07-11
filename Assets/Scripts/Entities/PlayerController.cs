@@ -8,12 +8,21 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask _blockingLayer = default;
 
     private Animator _animator;
+    private float _timeout;
     private LevelManager _level;
     private float _timeBeforeLastInput = 0;
     private bool _firstInput;
     private float _inverseMoveTime;
     private Rigidbody2D _rb;
 
+    public bool InputTimeout
+    {
+        get => _timeout > 0;
+        set
+        {
+            _timeout = .4f;
+        }
+    }
     public InputData NextInput{get; set;}
     public event Action<InputData> onNewInput;
 
@@ -41,24 +50,32 @@ public class PlayerController : MonoBehaviour
             float inputX = Input.GetAxisRaw("Horizontal");         
             float inputY = Input.GetAxisRaw("Vertical");         
             // Process directions
-            if (Mathf.Abs(inputX) == 1f)
+            if (Mathf.Abs(inputX) == 1f && !InputTimeout)
             {
                 Vector3 position = new Vector3(inputX, 0.0f, 0.0f);
                 Collider2D hit = Physics2D.OverlapCircle
                     (transform.position + position, .2f, _blockingLayer);
                 if (!hit)
                 {
+                    InputTimeout = true;
                     AddNewInput(position, InputType.Movement);
                 }
             }
-            else if (Mathf.Abs(inputY) == 1f)
+            else if (Mathf.Abs(inputY) == 1f && !InputTimeout)
             {
                 Vector3 position = new Vector3(0f, inputY, 0f);
                 Collider2D hit = Physics2D.OverlapCircle
                     (transform.position + position, .2f, _blockingLayer);
+
+                IClimbable climbable;
                 if (!hit && inputY != 1)
                 {
                     // Add new input to the queue
+                    InputTimeout = true;
+                    AddNewInput(position, InputType.Movement);
+                }
+                else if (hit.TryGetComponent<IClimbable>(out climbable))
+                {
                     AddNewInput(position, InputType.Movement);
                 }
             }
@@ -70,6 +87,9 @@ public class PlayerController : MonoBehaviour
         {
             Run();
         }
+
+        if (_timeout > 0)
+            _timeout -= Time.deltaTime;
     }
 
     public void Run()
@@ -80,9 +100,9 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator Movement()
     {
-        NextInput = _level.PlayerInputs.Dequeue();
         do
         {
+            NextInput = _level.PlayerInputs.Dequeue();
             Debug.Log(NextInput.MoveAmount);
             // Wait for when the input should be called
             yield return new WaitForSeconds(NextInput.TimeBefore);
@@ -96,9 +116,6 @@ public class PlayerController : MonoBehaviour
             {
                 Move(NextInput.MoveAmount);
             }
-
-            NextInput = _level.PlayerInputs.Dequeue();
-
         }while(_level.PlayerInputs.Count > 0);
     }
 
