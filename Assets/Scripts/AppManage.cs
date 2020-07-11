@@ -3,15 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class AppManage : MonoBehaviour
 {
-
-    [SerializeField] private string _sceneToLoad = default;
-
     /// <summary>
     /// Method to simply load next scene in build index
     /// </summary>
-    public void LoadNextScene()
+    public void LoadNextScene(string sceneToLoad)
     {
-        SceneLoader.Load(_sceneToLoad);
+        SceneLoader.Load(sceneToLoad);
     }
 
     /// <summary>
