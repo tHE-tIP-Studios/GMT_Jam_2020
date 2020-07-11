@@ -5,7 +5,7 @@ public class ShockTrap : Trap
     /// <summary>
     /// Method to be called when player enters the trap collider
     /// </summary>
-    public override void TrapEvent(PlayerController player)
+    public override void TrapActivation(PlayerController player)
     {
         throw new System.NotImplementedException();
         //TODO Access NextInput property, and change Key value to the inverse of the selected
@@ -16,7 +16,7 @@ public class ShockTrap : Trap
     /// object (2D physics only).
     /// </summary>
     /// <param name="other">The other Collider2D involved in this collision.</param>
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Player"))
         {
