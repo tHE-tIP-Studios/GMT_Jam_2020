@@ -20,12 +20,12 @@ public class SceneLoader : MonoBehaviour
 
     private static string sceneToLoad;
 
-    [SerializeField]private float timeBeforeUnloadPrevious = 0.5f;
-    [SerializeField]private float timeAfterFinishLoad = 0.5f;
-    [SerializeField]private float minimumLoadTime = 1;
-    [SerializeField]private UnityEvent onStartLoad;
-    [SerializeField]private UnityEvent onFinishLoad;
-    [SerializeField]private UnityEventFloat onUpdateLoading;
+    [SerializeField] private float timeBeforeUnloadPrevious = 0.5f;
+    [SerializeField] private float timeAfterFinishLoad = 0.5f;
+    [SerializeField] private float minimumLoadTime = 1;
+    [SerializeField] private UnityEvent onStartLoad = default;
+    [SerializeField] private UnityEvent onFinishLoad = default;
+    [SerializeField] private UnityEventFloat onUpdateLoading = default;
 
     public float loadingProgress { get; private set; }
 
@@ -56,13 +56,13 @@ public class SceneLoader : MonoBehaviour
         var startLoadTime = Time.time;
         var operation = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
         operation.allowSceneActivation = false;
-        
+
         while (!operation.isDone)
         {
             loadingProgress = Mathf.InverseLerp(0, 0.9f, operation.progress);
             onUpdateLoading.Invoke(loadingProgress);
 
-            if(loadingProgress >= 1)
+            if (loadingProgress >= 1)
             {
                 operation.allowSceneActivation = true;
             }
@@ -72,7 +72,7 @@ public class SceneLoader : MonoBehaviour
 
         //just to remove the weird pop effect when the loading is too fast
         var leftTime = minimumLoadTime - (Time.time - startLoadTime);
-        leftTime = Math.Max(0,leftTime);
+        leftTime = Math.Max(0, leftTime);
         yield return new WaitForSeconds(leftTime);
 
         //unload loading scene
