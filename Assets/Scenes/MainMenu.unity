@@ -650,7 +650,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b86338e4edfae54c87b757452d17af6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneToLoad: Level1
 --- !u!4 &298210625
 Transform:
   m_ObjectHideFlags: 0
@@ -2694,7 +2693,7 @@ MonoBehaviour:
   isGlobal: 1
   blendDistance: 0
   weight: 1
-  priority: 1
+  priority: 0
 --- !u!1 &1824785394
 GameObject:
   m_ObjectHideFlags: 0
@@ -2706,6 +2705,7 @@ GameObject:
   - component: {fileID: 1824785397}
   - component: {fileID: 1824785396}
   - component: {fileID: 1824785395}
+  - component: {fileID: 1824785398}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -2761,6 +2761,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1824785398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824785394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e74002a0cf02b8c4d9fac82895d297d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2045824540
 GameObject:
   m_ObjectHideFlags: 0
