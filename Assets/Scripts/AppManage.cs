@@ -8,6 +8,7 @@ public class AppManage : MonoBehaviour
     /// </summary>
     public void LoadNextScene()
     {
+        //TODO Should do a simple transition
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
