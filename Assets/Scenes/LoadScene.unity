@@ -557,7 +557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBeforeUnloadPrevious: 1
   timeAfterFinishLoad: 1
-  minimumLoadTime: 2
+  minimumLoadTime: 1
   onStartLoad:
     m_PersistentCalls:
       m_Calls: []

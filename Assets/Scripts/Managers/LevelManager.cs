@@ -11,13 +11,13 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Transform _levelSpawn = default;
     [SerializeField] private InputUI _inputUIPrefab = default;
     [SerializeField] private RectTransform _inputPanel = default;
-    public PlayerController CurrentPlayer {get; private set;}
+    public PlayerController CurrentPlayer { get; private set; }
     private Queue<InputData> _playerInputs;
     private int _currentComand;
-    public static LevelManager Instance {get; private set;}
+    public static LevelManager Instance { get; private set; }
     [Tooltip("called when the turn for the player to pick his actions ends")]
     public UnityEngine.Events.UnityEvent OnTurnSwitch;
-    public bool PlayerTurn {get; private set;}
+    public bool PlayerTurn { get; private set; }
     public int MaxInputs => _inputsAmount;
     public int CurrentInputs => _playerInputs.Count;
     public float Percent => (float)CurrentInputs / (float)MaxInputs;
@@ -45,18 +45,14 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void Awake() 
+    private void Awake()
     {
-        _playerInputs = new Queue<InputData>(_inputsAmount);
-        Instance = this;
+        StartCoroutine(WaitBeforeSettingAwake());
     }
 
-    private void Start() 
+    private void Start()
     {
-        PlayerTurn = true;
-        CurrentPlayer = Instantiate(_playerPrefab, _levelSpawn.position, _levelSpawn.rotation);
-        CurrentPlayer.onNewInput += NewInputUI;
-        CurrentPlayer.onNewNextInput += RunUI;
+        StartCoroutine(WaitBeforeSettingStart());
     }
 
     private void NewInputUI(InputData data)
@@ -65,7 +61,7 @@ public class LevelManager : MonoBehaviour
         ui.SetInfo(data);
     }
 
-    private void Update() 
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button7))
         {
@@ -76,6 +72,21 @@ public class LevelManager : MonoBehaviour
         {
             ResetLevel();
         }
+    }
+
+    private IEnumerator WaitBeforeSettingAwake()
+    {
+        yield return new WaitForSeconds(2f);
+        _playerInputs = new Queue<InputData>(_inputsAmount);
+        Instance = this;
+    }
+    private IEnumerator WaitBeforeSettingStart()
+    {
+        yield return new WaitForSeconds(2f);
+        PlayerTurn = true;
+        CurrentPlayer = Instantiate(_playerPrefab, _levelSpawn.position, _levelSpawn.rotation);
+        CurrentPlayer.onNewInput += NewInputUI;
+        CurrentPlayer.onNewNextInput += RunUI;
     }
 
     /// <summary>
@@ -103,7 +114,7 @@ public class LevelManager : MonoBehaviour
         CurrentPlayer.onNewInput -= NewInputUI;
         CurrentPlayer.onNewNextInput -= RunUI;
 
-        foreach(Transform t in _inputPanel.transform)
+        foreach (Transform t in _inputPanel.transform)
         {
             Destroy(t.gameObject);
         }
