@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,6 +8,7 @@ public class ExitLevel : MonoBehaviour
     [SerializeField] private UnityEvent _OnExit = default;
     [SerializeField] private float _timeToWait = default;
     [SerializeField] private bool _isOpen = default;
+    [SerializeField] private GameObject[] _sprites;
     private WaitForSeconds _timer = default;
     private LevelManager _levelManager = default;
     private PlayerController _player = default;
@@ -27,6 +27,19 @@ public class ExitLevel : MonoBehaviour
         _triggerZone.offset = new Vector2(0f, 0.1f);
     }
 
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    private void Start()
+    {
+        if (_isOpen)
+        {
+            _sprites[0].SetActive(false);
+            _sprites[1].SetActive(true);
+        }
+    }
+
     private IEnumerator WaitBeforeLoadNextLevel()
     {
         //TODO Have a level cleared animation
@@ -39,14 +52,24 @@ public class ExitLevel : MonoBehaviour
     /// attached to this object (2D physics only).
     /// </summary>
     /// <param name="other">The other Collider2D involved in this collision.</param>
-    void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            if (_levelManager.CurrentInputs <= 0)
+            if (_levelManager.CurrentInputs <= 0 && _isOpen)
             {
                 StartCoroutine(WaitBeforeLoadNextLevel());
             }
+        }
+    }
+
+    public void OpenExit()
+    {
+        if (_isOpen == false)
+        {
+            _isOpen = !_isOpen;
+            _sprites[0].SetActive(false);
+            _sprites[1].SetActive(true);
         }
     }
 }

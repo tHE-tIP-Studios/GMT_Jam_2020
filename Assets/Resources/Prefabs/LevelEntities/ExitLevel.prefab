@@ -319,7 +319,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64cc54764c81bfb4786666ed2875e012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnPlayerEnter:
+  _OnExit:
     m_PersistentCalls:
       m_Calls: []
   _timeToWait: 0
+  _isOpen: 0
+  _sprites:
+  - {fileID: 2101619465643723704}
+  - {fileID: 6070534652932087380}
