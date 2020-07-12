@@ -6,10 +6,11 @@ public class LineHandler : MonoBehaviour
 {
     [SerializeField] private float SECTION_LENGTH = 1f;
     [SerializeField] private float _dampeningAmount = .4f;
+    [SerializeField] private int _resolution;
+    [SerializeField] private Transform _endpoint;
     private LineRenderer _line;
     private Transform _floaterPos;
     private VerletLinePoint[] _points;
-    private int _resolution;
     private float _dampening;
     private bool _hang;
 
@@ -19,16 +20,20 @@ public class LineHandler : MonoBehaviour
     {
         _line = GetComponent<LineRenderer>();
         _dampening = _dampeningAmount;
+        _line.positionCount = _resolution;
+        if (_endpoint != null)
+            NewTarget(_endpoint);
         InitRope();
     }
 
     private void InitRope()
     {
-        Vector3 pointPosition = _floaterPos.position;
+        Vector3 pointPosition = transform.position;
 
+        _points = new VerletLinePoint[_resolution];
         for (int i = 0; i < _resolution; i++)
         {
-            _points[i] = new VerletLinePoint(pointPosition, Physics.gravity);
+            _points[i] = new VerletLinePoint(pointPosition, Physics.gravity * 20);
 
             pointPosition.y -= SECTION_LENGTH;
         }
@@ -38,16 +43,13 @@ public class LineHandler : MonoBehaviour
     {
         if (_line != null)
             _line.SetPosition(0, transform.position);
-        if (_floaterPos != null)
-        {
-            DisplayRope();
-        }
+        
+        DisplayRope();
     }
 
     private void FixedUpdate()
     {
-        if (_floaterPos != null)
-            UpdateRopeSimulation(Time.fixedDeltaTime);
+        UpdateRopeSimulation(Time.fixedDeltaTime);
     }
 
     private void DisplayRope()
@@ -60,8 +62,6 @@ public class LineHandler : MonoBehaviour
         {
             Vector3 dir = _points[_resolution - 2].Pos - _floaterPos.position;
             _floaterPos.up = dir;
-
-            //_floaterPos.LookAt(_points[_resolution - 2].Pos);
         }
     }
 
