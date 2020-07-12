@@ -1744,7 +1744,7 @@ PrefabInstance:
     - target: {fileID: 6070534654514680074, guid: 12f2f237aad8730468f731e6bc4aac7d,
         type: 3}
       propertyPath: _OnExit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: ThankYou
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6070534654514680084, guid: 12f2f237aad8730468f731e6bc4aac7d,
         type: 3}
