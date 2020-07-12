@@ -13,6 +13,7 @@ public class ExitLevel : MonoBehaviour
     private LevelManager _levelManager = default;
     private PlayerController _player = default;
     private BoxCollider2D _triggerZone = default;
+    private bool _wasUsed = default;
 
     private void Awake()
     {
@@ -56,8 +57,9 @@ public class ExitLevel : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (_levelManager.CurrentInputs <= 0 && _isOpen)
+            if (_levelManager.CurrentInputs <= 0 && _isOpen && !_wasUsed)
             {
+                _wasUsed = true;
                 StartCoroutine(WaitBeforeLoadNextLevel());
             }
         }

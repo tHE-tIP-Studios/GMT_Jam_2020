@@ -555,9 +555,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc8024c20d54fc94ea37d380b6c34a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBeforeUnloadPrevious: 3
+  timeBeforeUnloadPrevious: 1
   timeAfterFinishLoad: 1
-  minimumLoadTime: 3
+  minimumLoadTime: 2
   onStartLoad:
     m_PersistentCalls:
       m_Calls: []
@@ -634,7 +634,7 @@ Canvas:
   m_GameObject: {fileID: 1620961321}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 1770336765}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
