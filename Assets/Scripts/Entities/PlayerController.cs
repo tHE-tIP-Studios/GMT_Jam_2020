@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private bool _firstInput;
     private float _inverseMoveTime;
     private Rigidbody2D _rb;
+    private Transform _feetPosition;
 
     public bool InputTimeout
     {
@@ -31,6 +32,7 @@ public class PlayerController : MonoBehaviour
         GameObject obj = GameObject.FindGameObjectWithTag("LevelManager");
         Debug.Log(obj.name);
         _level = obj.GetComponent<LevelManager>();
+        _feetPosition = GameObject.FindGameObjectWithTag("Feet").transform;
     }
 
     private void ResetPlayer()
@@ -131,7 +133,20 @@ public class PlayerController : MonoBehaviour
         Vector3 end = transform.position + toMove;
         // Check if the move is possible
         // ...
-        StartCoroutine(SmoothMovement(end));
+        Collider2D col;
+        col = Physics2D.OverlapCircle(end, .3f, _blockingLayer);
+        if (!col && toMove.y != 1)
+        {
+            StartCoroutine(SmoothMovement(end));
+        }
+        else if (col)
+        {
+            IClimbable c = col.GetComponent<IClimbable>();
+            if (c != null)
+            {
+                StartCoroutine(SmoothMovement(end));
+            }
+        }
     }
 
     protected IEnumerator SmoothMovement(Vector3 end)
