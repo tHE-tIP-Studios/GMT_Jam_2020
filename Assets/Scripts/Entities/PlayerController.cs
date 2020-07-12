@@ -122,6 +122,8 @@ public class PlayerController : MonoBehaviour
             {
                 Move(NextInput.MoveAmount);
                 yield return new WaitForSeconds(_moveTime);
+                _animator.SetBool("Walk", false);
+                _animator.SetBool("Climb", false);
             }
         } while (_level.PlayerInputs.Count > 0);
     }
@@ -155,9 +157,6 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(SmoothMovement(end));
             }
         }
-
-        _animator.SetBool("Walk", false);
-        _animator.SetBool("Climb", false);
     }
 
     protected IEnumerator SmoothMovement(Vector3 end)
