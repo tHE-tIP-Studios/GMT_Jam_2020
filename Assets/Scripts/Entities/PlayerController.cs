@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using System;
@@ -34,24 +35,26 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public event Action onInteract;
 
-    private void Awake() 
+    private void Awake()
     {
         GameObject obj = GameObject.FindGameObjectWithTag("LevelManager");
         Debug.Log(obj.name);
         _level = obj.GetComponent<LevelManager>();
+        _feetPosition = GameObject.FindGameObjectWithTag("Feet").transform;
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void ResetPlayer()
     {
-        _firstInput = true; 
+        _firstInput = true;
     }
 
-    private void OnEnable() 
+    private void OnEnable()
     {
         _level.onLevelReset += ResetPlayer;
     }
 
-    private void OnDisable() 
+    private void OnDisable()
     {
         _level.onLevelReset -= ResetPlayer;
     }
@@ -126,6 +129,8 @@ public class PlayerController : MonoBehaviour
             {
                 Move(NextInput.MoveAmount);
                 // yield return new WaitForSeconds(_moveTime);
+                _animator.SetBool("Walk", false);
+                _animator.SetBool("Climb", false);
             }
         } while (_level.PlayerInputs.Count > 0);
     }
@@ -142,11 +147,12 @@ public class PlayerController : MonoBehaviour
             // add a -1 to the Y move component
             toMove = new Vector3(toMove.x, -1, 0.0f);
         }
-        
+
         Vector3 end = transform.position + toMove;
         col = Physics2D.OverlapCircle(end, .3f, _blockingLayer);
         if (!col && toMove.y != 1)
         {
+            _animator.SetBool("Walk", true);
             StartCoroutine(SmoothMovement(end));
         }
         else if (col)
@@ -154,6 +160,7 @@ public class PlayerController : MonoBehaviour
             IClimbable c = col.GetComponent<IClimbable>();
             if (c != null)
             {
+                _animator.SetBool("Climb", true);
                 StartCoroutine(SmoothMovement(end));
             }
         }
