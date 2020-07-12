@@ -16,7 +16,7 @@ public class LineHandler : MonoBehaviour
 
     public Transform EndPoint { get; set; }
 
-    private void Start()
+    private void Awake()
     {
         _line = GetComponent<LineRenderer>();
         _dampening = _dampeningAmount;
@@ -43,7 +43,7 @@ public class LineHandler : MonoBehaviour
     {
         if (_line != null)
             _line.SetPosition(0, transform.position);
-        
+
         DisplayRope();
     }
 
@@ -69,10 +69,14 @@ public class LineHandler : MonoBehaviour
     {
         // FIrst rope section to the tip of the rod
         _points[0].Pos = transform.position;
-        if (_hang)
-            EndPoint.position = _points[_resolution - 1].Pos;
-        else
-            _points[_resolution - 1].Pos = EndPoint.position;
+
+        if (EndPoint != null)
+        {
+            if (_hang)
+                EndPoint.position = _points[_resolution - 1].Pos;
+            else
+                _points[_resolution - 1].Pos = EndPoint.position;
+        }
         UpdateVerlet(dt);
 
         // Check for the currect section lenght
