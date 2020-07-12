@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private bool _firstInput;
     private float _inverseMoveTime;
     private Rigidbody2D _rb;
+    private Transform _feetPosition;
 
     public bool InputTimeout
     {
@@ -25,12 +26,14 @@ public class PlayerController : MonoBehaviour
     }
     public InputData NextInput { get; set; }
     public event Action<InputData> onNewInput;
+    public event Action onNewNextInput;
 
     private void Awake() 
     {
         GameObject obj = GameObject.FindGameObjectWithTag("LevelManager");
         Debug.Log(obj.name);
         _level = obj.GetComponent<LevelManager>();
+        _feetPosition = GameObject.FindGameObjectWithTag("Feet").transform;
     }
 
     private void ResetPlayer()
@@ -80,7 +83,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (Mathf.Abs(inputY) == 1f)
                 {
-                    Vector3 position = new Vector3(0f, inputY, 0f);
+                    Vector3 position = new Vector3(0f, -inputY, 0f);
                     // Add new input to the queue
                     InputTimeout = true;
                     AddNewInput(position, InputType.Movement);
@@ -88,11 +91,6 @@ public class PlayerController : MonoBehaviour
             }
 
             // Process buttons
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button7))
-        {
-            Run();
         }
 
         if (_timeout > 0)
@@ -110,6 +108,7 @@ public class PlayerController : MonoBehaviour
         {
             NextInput = _level.PlayerInputs.Dequeue();
             Debug.Log(NextInput.MoveAmount);
+            onNewNextInput?.Invoke();
             // Wait for when the input should be called
             yield return new WaitForSeconds(NextInput.TimeBefore);
 
@@ -128,10 +127,31 @@ public class PlayerController : MonoBehaviour
 
     private void Move(Vector3 toMove)
     {
-        Vector3 end = transform.position + toMove;
         // Check if the move is possible
         // ...
-        StartCoroutine(SmoothMovement(end));
+        // Check if there is any ground beneath
+        Collider2D col;
+        col = Physics2D.OverlapCircle(_feetPosition.position, .3f, LayerMask.GetMask("Ground"));
+        if (!col)
+        {
+            // add a -1 to the Y move component
+            toMove = new Vector3(toMove.x, -1, 0.0f);
+        }
+        
+        Vector3 end = transform.position + toMove;
+        col = Physics2D.OverlapCircle(end, .3f, _blockingLayer);
+        if (!col && toMove.y != 1)
+        {
+            StartCoroutine(SmoothMovement(end));
+        }
+        else if (col)
+        {
+            IClimbable c = col.GetComponent<IClimbable>();
+            if (c != null)
+            {
+                StartCoroutine(SmoothMovement(end));
+            }
+        }
     }
 
     protected IEnumerator SmoothMovement(Vector3 end)

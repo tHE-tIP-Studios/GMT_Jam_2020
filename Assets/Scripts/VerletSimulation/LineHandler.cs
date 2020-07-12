@@ -15,6 +15,7 @@ public class LineHandler : MonoBehaviour
     private bool _hang;
 
     public Transform EndPoint { get; set; }
+    public float LineLenght => SECTION_LENGTH * _resolution;
 
     private void Awake()
     {
