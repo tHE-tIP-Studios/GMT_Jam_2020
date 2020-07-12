@@ -14,6 +14,7 @@ public class LevelManager : MonoBehaviour
     public PlayerController CurrentPlayer {get; private set;}
     private Queue<InputData> _playerInputs;
     private int _currentComand;
+    public static LevelManager Instance {get; private set;}
     [Tooltip("called when the turn for the player to pick his actions ends")]
     public UnityEngine.Events.UnityEvent OnTurnSwitch;
     public bool PlayerTurn {get; private set;}
@@ -47,6 +48,7 @@ public class LevelManager : MonoBehaviour
     private void Awake() 
     {
         _playerInputs = new Queue<InputData>(_inputsAmount);
+        Instance = this;
     }
 
     private void Start() 
@@ -70,7 +72,7 @@ public class LevelManager : MonoBehaviour
             RunLevel();
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.R) && !PauseControl.Active)
         {
             ResetLevel();
         }

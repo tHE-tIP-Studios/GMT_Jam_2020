@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
             _timeBeforeLastInput += Time.deltaTime;
         }
 
-        if (_level.PlayerTurn && _level.CurrentInputs < _level.MaxInputs)
+        if (_level.PlayerTurn && _level.CurrentInputs < _level.MaxInputs || !PauseControl.Active)
         {
             // Get each input
             float inputX = Input.GetAxisRaw("Horizontal");
@@ -80,7 +80,6 @@ public class PlayerController : MonoBehaviour
             // Process directions
             if (!InputTimeout)
             {
-
                 if (Mathf.Abs(inputX) == 1f)
                 {
                     Vector3 position = new Vector3(inputX, 0.0f, 0.0f);
@@ -97,6 +96,10 @@ public class PlayerController : MonoBehaviour
             }
 
             // Process buttons
+            if(Input.GetButtonDown("Interact"))
+            {
+                AddNewInput(InteractWith, KeyCode.E);
+            }
         }
 
         if (_timeout > 0)
@@ -139,11 +142,11 @@ public class PlayerController : MonoBehaviour
         // ...
         // Check if there is any ground beneath
         Collider2D col;
-        col = Physics2D.OverlapCircle(_feetPosition.position, .4f, LayerMask.GetMask("Ground", "Climbables"));
+        col = Physics2D.OverlapCircle(_feetPosition.position, 0.4f, LayerMask.GetMask("Ground", "Climbables"));
         if (!col)
         {
             // add a -1 to the Y move component
-            toMove = new Vector3(toMove.x, -2, 0.0f);
+            toMove = new Vector3(toMove.x, -1, 0.0f);
         }
 
         Vector3 end = transform.position + toMove;
@@ -152,6 +155,7 @@ public class PlayerController : MonoBehaviour
         {
             _animator.SetBool("Walk", true);
             StartCoroutine(SmoothMovement(end));
+            transform.localScale = new Vector3(toMove.x, 1.0f, 1.0f);
         }
         else if (col)
         {
@@ -189,9 +193,10 @@ public class PlayerController : MonoBehaviour
 
     private void InteractWith()
     {
+        Vector3 interactPosition = 
+            transform.position + new Vector3(transform.localScale.x, 0.0f, 0.0f);
         Collider2D col = Physics2D.OverlapCircle
-                            (transform.position + transform.right,
-                            0.4f, LayerMask.GetMask("Interactable"));
+                            (interactPosition, 0.4f, LayerMask.GetMask("Interactable"));
         if (col)
         {
             IInteractable interactable;
@@ -205,8 +210,8 @@ public class PlayerController : MonoBehaviour
 
     public void AddNewInput(Action onInput, KeyCode key)
     {
-        if (!_level.PlayerTurn) return;
-        if (_firstInput) _firstInput = false;
+        if (!_level.PlayerTurn || _level.CurrentInputs >= _level.MaxInputs) return;
+        _firstInput = false;
 
         // Sort for the key
         InputData data = new InputData
@@ -215,6 +220,7 @@ public class PlayerController : MonoBehaviour
         _level.PlayerInputs.Enqueue(data);
         onNewInput?.Invoke(data);
         onNewInputUnityEvent?.Invoke();
+        CameraShake.Instance.Shake(0.1f, 0.6f, 1);
 
         // Resets the time
         _timeBeforeLastInput = 0.0f;
@@ -222,8 +228,8 @@ public class PlayerController : MonoBehaviour
 
     public void AddNewInput(Vector3 moveAmount)
     {
-        if (!_level.PlayerTurn) return;
-        if (_firstInput) _firstInput = false;
+        if (!_level.PlayerTurn || _level.CurrentInputs >= _level.MaxInputs) return;
+        _firstInput = false;
         // Sort for the key
         KeyCode code = KeyCode.LeftArrow;
 
@@ -240,6 +246,7 @@ public class PlayerController : MonoBehaviour
         _level.PlayerInputs.Enqueue(data);
         onNewInput?.Invoke(data);
         onNewInputUnityEvent?.Invoke();
+        CameraShake.Instance.Shake(0.1f, 0.6f, 1);
 
         // Resets the time
         _timeBeforeLastInput = 0.0f;
@@ -247,8 +254,8 @@ public class PlayerController : MonoBehaviour
 
     public void AddNewInput(Vector3 moveAmount, Action onInput, InputType type)
     {
-        if (!_level.PlayerTurn) return;
-        if (_firstInput) _firstInput = false;
+        if (!_level.PlayerTurn || _level.CurrentInputs >= _level.MaxInputs) return;
+        _firstInput = false;
         KeyCode code = KeyCode.LeftArrow;
 
         if (moveAmount.x > 0)
@@ -264,6 +271,8 @@ public class PlayerController : MonoBehaviour
         _level.PlayerInputs.Enqueue(data);
         onNewInput?.Invoke(data);
         onNewInputUnityEvent?.Invoke();
+
+        CameraShake.Instance.Shake(0.1f, 0.6f, 1);
 
         // Resets the time
         _timeBeforeLastInput = 0.0f;

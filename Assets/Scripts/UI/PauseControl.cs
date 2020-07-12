@@ -6,32 +6,33 @@ public class PauseControl : MonoBehaviour
 {
     [SerializeField] private GameObject _pauseElements = default;
 
-    private LevelManager _manager;
-    private bool _active;
-    
-    private void Awake() 
-    {
-        _manager = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();    
-    }
+    public static bool Active {get; private set;}
 
     private void Update() 
     {
         if (Input.GetButtonDown("Pause"))
         {
             TogglePause();
-            _manager.CurrentPlayer.AddNewInput(TogglePause, KeyCode.P);
-        }    
+            LevelManager.Instance
+                .CurrentPlayer.AddNewInput(TogglePause, KeyCode.P);
+        }
     }
 
     public void Resume()
     {
         TogglePause();
-        _manager.CurrentPlayer.AddNewInput(TogglePause, KeyCode.P);
+        LevelManager.Instance
+            .CurrentPlayer.AddNewInput(TogglePause, KeyCode.P);
     }
 
     public void TogglePause()
     {
-        _active = !_active;
-        _pauseElements.SetActive(_active);
+        Active = !Active;
+        _pauseElements.SetActive(Active);
+    }
+
+    private void DisablePause()
+    {
+        _pauseElements.SetActive(false);
     }
 }
