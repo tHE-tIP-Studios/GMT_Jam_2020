@@ -8,8 +8,9 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField] private int _inputsAmount;
     [SerializeField] private Slider _commandsSlider;
-    private PlayerController _player;
-    private Vector3 _initialPlayerPosition;
+    [SerializeField] private PlayerController _playerPrefab;
+    [SerializeField] private Transform _levelSpawn;
+    private PlayerController _currentPlayer;
     private Queue<InputData> _playerInputs;
     [Tooltip("called when the turn for the player to pick his actions ends")]
     public UnityEngine.Events.UnityEvent OnTurnSwitch;
@@ -50,8 +51,7 @@ public class LevelManager : MonoBehaviour
     private void Start() 
     {
         PlayerTurn = true;
-        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        _initialPlayerPosition = _player.transform.position;
+        _currentPlayer = Instantiate(_playerPrefab, _levelSpawn.position, _levelSpawn.rotation);
     }
 
     private void Update() 
@@ -72,13 +72,13 @@ public class LevelManager : MonoBehaviour
     public void RunLevel()
     {
         if (CurrentInputs < InputsAmount) return;
-
-        _player.Run();
+        _currentPlayer.Run();
     }
 
     public void ResetLevel()
     {
-        _player.transform.position = _initialPlayerPosition;
+        Destroy(_currentPlayer.gameObject);
+        _currentPlayer = Instantiate(_playerPrefab, _levelSpawn.position, _levelSpawn.rotation);
         _playerInputs.Clear();
         onLevelReset?.Invoke();
     }

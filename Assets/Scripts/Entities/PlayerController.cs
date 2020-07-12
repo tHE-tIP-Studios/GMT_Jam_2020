@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (Mathf.Abs(inputY) == 1f)
                 {
-                    Vector3 position = new Vector3(0f, inputY, 0f);
+                    Vector3 position = new Vector3(0f, -inputY, 0f);
                     // Add new input to the queue
                     InputTimeout = true;
                     AddNewInput(position, InputType.Movement);
@@ -90,11 +90,6 @@ public class PlayerController : MonoBehaviour
             }
 
             // Process buttons
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button7))
-        {
-            Run();
         }
 
         if (_timeout > 0)
@@ -130,10 +125,18 @@ public class PlayerController : MonoBehaviour
 
     private void Move(Vector3 toMove)
     {
-        Vector3 end = transform.position + toMove;
         // Check if the move is possible
         // ...
+        // Check if there is any ground beneath
         Collider2D col;
+        col = Physics2D.OverlapCircle(_feetPosition.position, .3f, LayerMask.GetMask("Ground"));
+        if (!col)
+        {
+            // add a -1 to the Y move component
+            toMove = new Vector3(toMove.x, -1, 0.0f);
+        }
+        
+        Vector3 end = transform.position + toMove;
         col = Physics2D.OverlapCircle(end, .3f, _blockingLayer);
         if (!col && toMove.y != 1)
         {
