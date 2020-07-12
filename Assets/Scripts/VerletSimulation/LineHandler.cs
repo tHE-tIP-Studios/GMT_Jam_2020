@@ -6,13 +6,13 @@ public class LineHandler : MonoBehaviour
 {
     [SerializeField] private float SECTION_LENGTH = 1f;
     [SerializeField] private float _dampeningAmount = .4f;
-    [SerializeField] private int _resolution;
-    [SerializeField] private Transform _endpoint;
+    [SerializeField] private int _resolution = 0;
+    [SerializeField] private Transform _endpoint = default;
     private LineRenderer _line;
     private Transform _floaterPos;
     private VerletLinePoint[] _points;
     private float _dampening;
-    private bool _hang;
+    private bool _hang = false;
 
     public Transform EndPoint { get; set; }
     public float LineLenght => SECTION_LENGTH * _resolution;

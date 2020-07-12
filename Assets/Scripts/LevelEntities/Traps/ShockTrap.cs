@@ -7,8 +7,11 @@ public class ShockTrap : Trap
     /// </summary>
     public override void TrapActivation(PlayerController player)
     {
-        throw new System.NotImplementedException();
-        //TODO Access NextInput property, and change Key value to the inverse of the selected
+        InputData trapInput = new InputData(
+            -player.NextInput.MoveAmount, player.NextInput.TimeBefore,
+            player.NextInput.onInput, player.NextInput.Type, player.NextInput.Key);
+
+        player.NextInput = trapInput;
     }
 
     /// <summary>
@@ -22,7 +25,7 @@ public class ShockTrap : Trap
         {
             PlayerController p = GetComponent<PlayerController>();
             OnPlayerEnter?.Invoke();
-            //TODO Add TrapEvent() to NextInput onInput action
+            TrapActivation(p);
         }
     }
 }

@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _moveTime = 0.1f;
     [SerializeField] private LayerMask _blockingLayer = default;
+    [SerializeField] private Transform _feetPosition = default;
 
     private Animator _animator;
     private float _timeout;
@@ -14,7 +16,6 @@ public class PlayerController : MonoBehaviour
     private bool _firstInput;
     private float _inverseMoveTime;
     private Rigidbody2D _rb;
-    private Transform _feetPosition;
 
     public bool InputTimeout
     {
@@ -26,14 +27,18 @@ public class PlayerController : MonoBehaviour
     }
     public InputData NextInput { get; set; }
     public event Action<InputData> onNewInput;
+    public UnityEvent onNewInputUnityEvent;
     public event Action onNewNextInput;
+    /// <summary>
+    /// Used to like, throw some particles from the player, like puff, when you interact
+    /// </summary>
+    public event Action onInteract;
 
     private void Awake()
     {
         GameObject obj = GameObject.FindGameObjectWithTag("LevelManager");
         Debug.Log(obj.name);
         _level = obj.GetComponent<LevelManager>();
-        _feetPosition = GameObject.FindGameObjectWithTag("Feet").transform;
         _animator = GetComponentInChildren<Animator>();
     }
 
@@ -67,7 +72,7 @@ public class PlayerController : MonoBehaviour
             _timeBeforeLastInput += Time.deltaTime;
         }
 
-        if (_level.PlayerTurn && _level.InputsAmount > 0)
+        if (_level.PlayerTurn && _level.CurrentInputs < _level.MaxInputs)
         {
             // Get each input
             float inputX = Input.GetAxisRaw("Horizontal");
@@ -80,14 +85,14 @@ public class PlayerController : MonoBehaviour
                 {
                     Vector3 position = new Vector3(inputX, 0.0f, 0.0f);
                     InputTimeout = true;
-                    AddNewInput(position, InputType.Movement);
+                    AddNewInput(position);
                 }
                 else if (Mathf.Abs(inputY) == 1f)
                 {
-                    Vector3 position = new Vector3(0f, -inputY, 0f);
+                    Vector3 position = new Vector3(0f, inputY, 0f);
                     // Add new input to the queue
                     InputTimeout = true;
-                    AddNewInput(position, InputType.Movement);
+                    AddNewInput(position);
                 }
             }
 
@@ -108,20 +113,20 @@ public class PlayerController : MonoBehaviour
         do
         {
             NextInput = _level.PlayerInputs.Dequeue();
-            Debug.Log(NextInput.MoveAmount);
             onNewNextInput?.Invoke();
+            
+            Debug.Log(NextInput.MoveAmount);
+            
             // Wait for when the input should be called
             yield return new WaitForSeconds(NextInput.TimeBefore);
 
             // Process and call the input
-            if (NextInput.onInput != null)
-            {
-                NextInput.onInput.Invoke();
-            }
+            NextInput.onInput?.Invoke();
+
             if (NextInput.Type.Equals(InputType.Movement))
             {
                 Move(NextInput.MoveAmount);
-                yield return new WaitForSeconds(_moveTime);
+                // yield return new WaitForSeconds(_moveTime);
                 _animator.SetBool("Walk", false);
                 _animator.SetBool("Climb", false);
             }
@@ -134,11 +139,11 @@ public class PlayerController : MonoBehaviour
         // ...
         // Check if there is any ground beneath
         Collider2D col;
-        col = Physics2D.OverlapCircle(_feetPosition.position, .3f, LayerMask.GetMask("Ground"));
+        col = Physics2D.OverlapCircle(_feetPosition.position, .4f, LayerMask.GetMask("Ground", "Climbables"));
         if (!col)
         {
             // add a -1 to the Y move component
-            toMove = new Vector3(toMove.x, -1, 0.0f);
+            toMove = new Vector3(toMove.x, -2, 0.0f);
         }
 
         Vector3 end = transform.position + toMove;
@@ -182,13 +187,59 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void AddNewInput(Vector3 moveAmount, InputType type)
+    private void InteractWith()
+    {
+        Collider2D col = Physics2D.OverlapCircle
+                            (transform.position + transform.right,
+                            0.4f, LayerMask.GetMask("Interactable"));
+        if (col)
+        {
+            IInteractable interactable;
+            if (col.TryGetComponent<IInteractable>(out interactable))
+            {
+                interactable.Interact();
+                onInteract?.Invoke();
+            }
+        }
+    }
+
+    public void AddNewInput(Action onInput, KeyCode key)
     {
         if (!_level.PlayerTurn) return;
         if (_firstInput) _firstInput = false;
-        InputData data = new InputData(moveAmount, _timeBeforeLastInput, type);
+
+        // Sort for the key
+        InputData data = new InputData
+            (Vector3.zero, _timeBeforeLastInput, onInput, InputType.Action, key);
+
         _level.PlayerInputs.Enqueue(data);
         onNewInput?.Invoke(data);
+        onNewInputUnityEvent?.Invoke();
+
+        // Resets the time
+        _timeBeforeLastInput = 0.0f;
+    }
+
+    public void AddNewInput(Vector3 moveAmount)
+    {
+        if (!_level.PlayerTurn) return;
+        if (_firstInput) _firstInput = false;
+        // Sort for the key
+        KeyCode code = KeyCode.LeftArrow;
+
+        if (moveAmount.x > 0)
+            code = KeyCode.RightArrow;
+        else if (moveAmount.x < 0)
+            code = KeyCode.LeftArrow;
+        else if (moveAmount.y > 0)
+            code = KeyCode.UpArrow;
+        else if (moveAmount.y < 0)
+            code = KeyCode.DownArrow;
+
+        InputData data = new InputData(moveAmount, _timeBeforeLastInput, InputType.Movement, code);
+        _level.PlayerInputs.Enqueue(data);
+        onNewInput?.Invoke(data);
+        onNewInputUnityEvent?.Invoke();
 
         // Resets the time
         _timeBeforeLastInput = 0.0f;
@@ -198,9 +249,21 @@ public class PlayerController : MonoBehaviour
     {
         if (!_level.PlayerTurn) return;
         if (_firstInput) _firstInput = false;
-        InputData data = new InputData(moveAmount, _timeBeforeLastInput, onInput, type);
+        KeyCode code = KeyCode.LeftArrow;
+
+        if (moveAmount.x > 0)
+            code = KeyCode.RightArrow;
+        else if (moveAmount.x < 0)
+            code = KeyCode.LeftArrow;
+        else if (moveAmount.y > 0)
+            code = KeyCode.UpArrow;
+        else if (moveAmount.y < 0)
+            code = KeyCode.DownArrow;
+
+        InputData data = new InputData(moveAmount, _timeBeforeLastInput, onInput, type, code);
         _level.PlayerInputs.Enqueue(data);
         onNewInput?.Invoke(data);
+        onNewInputUnityEvent?.Invoke();
 
         // Resets the time
         _timeBeforeLastInput = 0.0f;
