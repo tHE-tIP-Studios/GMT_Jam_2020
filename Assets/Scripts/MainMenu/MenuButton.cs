@@ -13,7 +13,7 @@ public class MenuButton : MonoBehaviour
 
     public void OnSelected()
     {
-        string text = _textPro.text;
+        string text = _textPro.text.TrimStart(_selectionPrefix);
         text = _selectionPrefix + text;
         _textPro.text = text;
     }
