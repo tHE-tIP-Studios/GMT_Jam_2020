@@ -7,14 +7,14 @@ using System;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private int _inputsAmount;
-    [SerializeField] private Slider _commandsSlider;
     [SerializeField] private PlayerController _playerPrefab;
     [SerializeField] private Transform _levelSpawn;
+    [SerializeField] private InputUI _inputUIPrefab;
     private PlayerController _currentPlayer;
     private Queue<InputData> _playerInputs;
     [Tooltip("called when the turn for the player to pick his actions ends")]
     public UnityEngine.Events.UnityEvent OnTurnSwitch;
-    public bool PlayerTurn{get; private set;}
+    public bool PlayerTurn {get; private set;}
     public int MaxInputs => _inputsAmount;
     public int CurrentInputs => _playerInputs.Count;
     public float Percent => (float)CurrentInputs / (float)MaxInputs;
@@ -52,12 +52,16 @@ public class LevelManager : MonoBehaviour
     {
         PlayerTurn = true;
         _currentPlayer = Instantiate(_playerPrefab, _levelSpawn.position, _levelSpawn.rotation);
+        _currentPlayer.onNewInput += NewInputUI;
+    }
+
+    private void NewInputUI(InputData data)
+    {
+
     }
 
     private void Update() 
     {
-        _commandsSlider.SetValueWithoutNotify(Percent);
-        
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button7))
         {
             RunLevel();
@@ -77,6 +81,7 @@ public class LevelManager : MonoBehaviour
 
     public void ResetLevel()
     {
+        _currentPlayer.onNewInput -= NewInputUI;
         Destroy(_currentPlayer.gameObject);
         _currentPlayer = Instantiate(_playerPrefab, _levelSpawn.position, _levelSpawn.rotation);
         _playerInputs.Clear();

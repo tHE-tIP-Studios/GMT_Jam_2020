@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     }
     public InputData NextInput { get; set; }
     public event Action<InputData> onNewInput;
+    public event Action onNewNextInput;
 
     private void Awake() 
     {
@@ -107,6 +108,7 @@ public class PlayerController : MonoBehaviour
         {
             NextInput = _level.PlayerInputs.Dequeue();
             Debug.Log(NextInput.MoveAmount);
+            onNewNextInput?.Invoke();
             // Wait for when the input should be called
             yield return new WaitForSeconds(NextInput.TimeBefore);
 
