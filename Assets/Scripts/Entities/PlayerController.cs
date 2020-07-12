@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using System;
 using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _moveTime = 0.1f;
     [SerializeField] private LayerMask _blockingLayer = default;
+    [SerializeField] private Transform _feetPosition = default;
 
     private Animator _animator;
     private float _timeout;
@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
     private bool _firstInput;
     private float _inverseMoveTime;
     private Rigidbody2D _rb;
-    private Transform _feetPosition;
 
     public bool InputTimeout
     {
@@ -40,7 +39,6 @@ public class PlayerController : MonoBehaviour
         GameObject obj = GameObject.FindGameObjectWithTag("LevelManager");
         Debug.Log(obj.name);
         _level = obj.GetComponent<LevelManager>();
-        _feetPosition = GameObject.FindGameObjectWithTag("Feet").transform;
         _animator = GetComponentInChildren<Animator>();
     }
 
@@ -74,7 +72,7 @@ public class PlayerController : MonoBehaviour
             _timeBeforeLastInput += Time.deltaTime;
         }
 
-        if (_level.PlayerTurn && _level.InputsAmount > 0)
+        if (_level.PlayerTurn && _level.CurrentInputs < _level.MaxInputs)
         {
             // Get each input
             float inputX = Input.GetAxisRaw("Horizontal");
@@ -141,11 +139,11 @@ public class PlayerController : MonoBehaviour
         // ...
         // Check if there is any ground beneath
         Collider2D col;
-        col = Physics2D.OverlapCircle(_feetPosition.position, .3f, LayerMask.GetMask("Ground", "Climbable"));
+        col = Physics2D.OverlapCircle(_feetPosition.position, .4f, LayerMask.GetMask("Ground", "Climbables"));
         if (!col)
         {
             // add a -1 to the Y move component
-            toMove = new Vector3(toMove.x, -1, 0.0f);
+            toMove = new Vector3(toMove.x, -2, 0.0f);
         }
 
         Vector3 end = transform.position + toMove;
@@ -212,7 +210,7 @@ public class PlayerController : MonoBehaviour
 
         // Sort for the key
         InputData data = new InputData
-            (Vector3.zero, _timeBeforeLastInput, InputType.Action, key);
+            (Vector3.zero, _timeBeforeLastInput, onInput, InputType.Action, key);
 
         _level.PlayerInputs.Enqueue(data);
         onNewInput?.Invoke(data);

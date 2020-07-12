@@ -128,6 +128,10 @@ MonoBehaviour:
   _blockingLayer:
     serializedVersion: 2
     m_Bits: 1280
+  _feetPosition: {fileID: 2209549200953028637}
+  onNewInputUnityEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2209549201568096196
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,8 +200,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -451297491
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: -6498262896935177058, guid: d6d3316bf4f6bc74c82b2d151aa9c3d2,
     type: 3}

@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Transform _levelSpawn = default;
     [SerializeField] private InputUI _inputUIPrefab = default;
     [SerializeField] private RectTransform _inputPanel = default;
-    private PlayerController _currentPlayer;
+    public PlayerController CurrentPlayer {get; private set;}
     private Queue<InputData> _playerInputs;
     private int _currentComand;
     [Tooltip("called when the turn for the player to pick his actions ends")]
@@ -27,7 +27,7 @@ public class LevelManager : MonoBehaviour
             return _playerInputs;
         }
     }
-    public int InputsAmount 
+    public int InputsAmount
     {
         get
         {
@@ -52,9 +52,9 @@ public class LevelManager : MonoBehaviour
     private void Start() 
     {
         PlayerTurn = true;
-        _currentPlayer = Instantiate(_playerPrefab, _levelSpawn.position, _levelSpawn.rotation);
-        _currentPlayer.onNewInput += NewInputUI;
-        _currentPlayer.onNewNextInput += RunUI;
+        CurrentPlayer = Instantiate(_playerPrefab, _levelSpawn.position, _levelSpawn.rotation);
+        CurrentPlayer.onNewInput += NewInputUI;
+        CurrentPlayer.onNewNextInput += RunUI;
     }
 
     private void NewInputUI(InputData data)
@@ -82,7 +82,7 @@ public class LevelManager : MonoBehaviour
     public void RunLevel()
     {
         if (CurrentInputs < InputsAmount) return;
-        _currentPlayer.Run();
+        CurrentPlayer.Run();
     }
 
     private void RunUI()
@@ -98,19 +98,21 @@ public class LevelManager : MonoBehaviour
     /// </summary>
     public void ResetLevel()
     {
-        _currentPlayer.onNewInput -= NewInputUI;
-        _currentPlayer.onNewNextInput -= RunUI;
+        CurrentPlayer.onNewInput -= NewInputUI;
+        CurrentPlayer.onNewNextInput -= RunUI;
+
         foreach(Transform t in _inputPanel.transform)
         {
             Destroy(t.gameObject);
         }
 
-        _currentPlayer.StopAllCoroutines();
-        Destroy(_currentPlayer.gameObject);
-
-        _currentPlayer = Instantiate(_playerPrefab, _levelSpawn.position, _levelSpawn.rotation);
-        _currentPlayer.onNewInput += NewInputUI;
-        _currentPlayer.onNewNextInput += RunUI;
+        CurrentPlayer.StopAllCoroutines();
+        Destroy(CurrentPlayer.gameObject);
+        CurrentPlayer = null;
+        PlayerController tempPlayer = Instantiate(_playerPrefab, _levelSpawn.position, _levelSpawn.rotation);
+        CurrentPlayer = tempPlayer;
+        CurrentPlayer.onNewInput += NewInputUI;
+        CurrentPlayer.onNewNextInput += RunUI;
 
         _playerInputs.Clear();
         _currentComand = 0;

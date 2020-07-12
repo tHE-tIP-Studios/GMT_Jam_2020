@@ -8,12 +8,13 @@ public class InputUI : MonoBehaviour
 {
     [SerializeField] private Image _timeImage = default;
     [SerializeField] private Image _inputImage = default;
+    [SerializeField] private GameObject _innactiveImage = default;
     [SerializeField] private UIIcons _uiInfo = default;
     private TextMeshProUGUI _timeText;
     private InputData _inputInfo;
     private void Awake()
     {
-        _timeText = _timeImage.GetComponentInChildren<TextMeshProUGUI>();    
+        _timeText = _timeImage.GetComponentInChildren<TextMeshProUGUI>(); 
     }
 
     public void SetInfo(InputData data)
@@ -64,6 +65,6 @@ public class InputUI : MonoBehaviour
         _timeImage.fillAmount = 0.0f;
         _timeText.text = $"0 s";
 
-        _inputImage.sprite = null;
+        _innactiveImage.SetActive(true);
     }
 }
