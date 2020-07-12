@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55a79d2652b459468c192acf70c428b, type: 3}
   m_Name: UIIcons
   m_EditorClassIdentifier: 
-  Left: {fileID: 2764229910452023007, guid: 1ccf2beaa623a434cb3aa839489956a5, type: 3}
-  Right: {fileID: 8500877819151777320, guid: 1ccf2beaa623a434cb3aa839489956a5, type: 3}
-  Up: {fileID: 5728693958493956918, guid: 1ccf2beaa623a434cb3aa839489956a5, type: 3}
-  Down: {fileID: -6363907259097430391, guid: 1ccf2beaa623a434cb3aa839489956a5, type: 3}
-  Pause: {fileID: -4967189255589574541, guid: 1ccf2beaa623a434cb3aa839489956a5, type: 3}
-  Interact: {fileID: 8277221347410903236, guid: 1ccf2beaa623a434cb3aa839489956a5,
+  Left: {fileID: 3039210842713156157, guid: ea843d882934cf9468f17ab307ddbf10, type: 3}
+  Right: {fileID: 6182861061679214308, guid: ea843d882934cf9468f17ab307ddbf10, type: 3}
+  Up: {fileID: 8309631369066868078, guid: ea843d882934cf9468f17ab307ddbf10, type: 3}
+  Down: {fileID: -3132703244072697079, guid: ea843d882934cf9468f17ab307ddbf10, type: 3}
+  Pause: {fileID: 2841885645230754530, guid: ea843d882934cf9468f17ab307ddbf10, type: 3}
+  Interact: {fileID: 2366485454458244462, guid: ea843d882934cf9468f17ab307ddbf10,
     type: 3}
   CLeft: {fileID: 0}
   CRight: {fileID: 0}

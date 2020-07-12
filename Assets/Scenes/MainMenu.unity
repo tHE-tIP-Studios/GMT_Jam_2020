@@ -480,7 +480,7 @@ MonoBehaviour:
   m_text: i/will/be/a/path/no/privacy/for/you/hahahahahahahahahah
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dacf06281052a6f4698df4437bd948e4, type: 2}
-  m_sharedMaterial: {fileID: 7501338608958794410, guid: dacf06281052a6f4698df4437bd948e4,
+  m_sharedMaterial: {fileID: -4398134307834075222, guid: dacf06281052a6f4698df4437bd948e4,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1258,7 +1258,7 @@ MonoBehaviour:
   m_text: robot_thingy.exe
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dacf06281052a6f4698df4437bd948e4, type: 2}
-  m_sharedMaterial: {fileID: 7501338608958794410, guid: dacf06281052a6f4698df4437bd948e4,
+  m_sharedMaterial: {fileID: -4398134307834075222, guid: dacf06281052a6f4698df4437bd948e4,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1850,7 +1850,7 @@ MonoBehaviour:
   m_text: boring.txt
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dacf06281052a6f4698df4437bd948e4, type: 2}
-  m_sharedMaterial: {fileID: 7501338608958794410, guid: dacf06281052a6f4698df4437bd948e4,
+  m_sharedMaterial: {fileID: -4398134307834075222, guid: dacf06281052a6f4698df4437bd948e4,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3805,7 +3805,7 @@ MonoBehaviour:
   m_text: terminate.bye
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dacf06281052a6f4698df4437bd948e4, type: 2}
-  m_sharedMaterial: {fileID: 7501338608958794410, guid: dacf06281052a6f4698df4437bd948e4,
+  m_sharedMaterial: {fileID: -4398134307834075222, guid: dacf06281052a6f4698df4437bd948e4,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

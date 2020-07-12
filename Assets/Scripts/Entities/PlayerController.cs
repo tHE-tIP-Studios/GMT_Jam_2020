@@ -124,10 +124,10 @@ public class PlayerController : MonoBehaviour
 
             if (NextInput.Type.Equals(InputType.Movement))
             {
-                Move(NextInput.MoveAmount);
-                // yield return new WaitForSeconds(_moveTime);
                 _animator.SetBool("Walk", false);
                 _animator.SetBool("Climb", false);
+                Move(NextInput.MoveAmount);
+                // yield return new WaitForSeconds(_moveTime);
             }
         } while (_level.PlayerInputs.Count > 0);
     }
