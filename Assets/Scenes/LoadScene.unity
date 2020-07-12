@@ -270,7 +270,7 @@ PrefabInstance:
     - target: {fileID: 7793241993190640879, guid: 285d41925080f794abfc0429df97a0b5,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 36.9
+      value: 36.899994
       objectReference: {fileID: 0}
     - target: {fileID: 7793241993190640879, guid: 285d41925080f794abfc0429df97a0b5,
         type: 3}
@@ -414,7 +414,7 @@ MonoBehaviour:
   m_text: Loading
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dacf06281052a6f4698df4437bd948e4, type: 2}
-  m_sharedMaterial: {fileID: 3195473955025245313, guid: dacf06281052a6f4698df4437bd948e4,
+  m_sharedMaterial: {fileID: 7501338608958794410, guid: dacf06281052a6f4698df4437bd948e4,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -675,6 +675,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3971083060992648376, guid: 697c70cbf66b10349bad3407a90b3b75,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5389916804244654237, guid: 697c70cbf66b10349bad3407a90b3b75,
         type: 3}
       propertyPath: m_LocalPosition.x
