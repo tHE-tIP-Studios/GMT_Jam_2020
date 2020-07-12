@@ -11,7 +11,7 @@ public class ShockTrap : Trap
         print(player.NextInput);
         InputData trapInput = new InputData(
             -player.NextInput.MoveAmount, player.NextInput.TimeBefore,
-            player.NextInput.onInput, player.NextInput.Type);
+            player.NextInput.onInput, player.NextInput.Type, player.NextInput.Key);
 
         player.NextInput = trapInput;
     }

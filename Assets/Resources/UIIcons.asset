@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55a79d2652b459468c192acf70c428b, type: 3}
+  m_Name: UIIcons
+  m_EditorClassIdentifier: 
+  Left: {fileID: 2764229910452023007, guid: 1ccf2beaa623a434cb3aa839489956a5, type: 3}
+  Right: {fileID: 8500877819151777320, guid: 1ccf2beaa623a434cb3aa839489956a5, type: 3}
+  Up: {fileID: 5728693958493956918, guid: 1ccf2beaa623a434cb3aa839489956a5, type: 3}
+  Down: {fileID: -6363907259097430391, guid: 1ccf2beaa623a434cb3aa839489956a5, type: 3}
+  Pause: {fileID: -4967189255589574541, guid: 1ccf2beaa623a434cb3aa839489956a5, type: 3}
+  Interact: {fileID: 8277221347410903236, guid: 1ccf2beaa623a434cb3aa839489956a5,
+    type: 3}
+  CLeft: {fileID: 0}
+  CRight: {fileID: 0}
+  CUp: {fileID: 0}
+  CDown: {fileID: 0}
+  CPause: {fileID: 0}
+  CInteract: {fileID: 0}
