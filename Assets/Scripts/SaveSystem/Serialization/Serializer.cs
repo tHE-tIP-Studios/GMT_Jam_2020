@@ -15,7 +15,7 @@ public class Serializer
             Directory.CreateDirectory(Application.persistentDataPath + SAVE_FOLDER);
         }
 
-        string path = Application.persistentDataPath + SAVE_FOLDER + '/' + name + ".sprm";
+        string path = Application.persistentDataPath + SAVE_FOLDER + '/' + name + ".sav";
         FileStream file = File.Create(path);
         formatter.Serialize(file, data);
 
