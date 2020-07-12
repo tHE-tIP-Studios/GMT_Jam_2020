@@ -1,30 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
-public class Button : Trap
+[RequireComponent(typeof(BoxCollider2D))]
+public class Button : MonoBehaviour, IInteractable
 {
-    private PlayerController _player = default;
+    [SerializeField] private UnityEvent _OnInteract;
 
     /// <summary>
-    /// Override method to make use of the events to open doors or move objects
+    /// Box collider variable to change values on Awake(), to be used by all
+    /// traps that extend this class
     /// </summary>
-    /// <param name="player"> Reference to the player script </param>
-    public override void TrapActivation(PlayerController player)
+    protected BoxCollider2D _triggerZone = default;
+
+    protected virtual void Awake()
     {
-        OnPlayerEnter?.Invoke();
+        _triggerZone = GetComponent<BoxCollider2D>();
+        _triggerZone.isTrigger = true;
+        _triggerZone.size = new Vector2(1f, 1.2f);
+        _triggerZone.offset = new Vector2(0f, 0.1f);
     }
 
-    /// <summary>
-    /// Sent when another object enters a trigger collider attached to this
-    /// object (2D physics only).
-    /// </summary>
-    /// <param name="other">The other Collider2D involved in this collision.</param>
-    private void OnTriggerEnter2D(Collider2D other)
+    public void Interact()
     {
-        if(other.CompareTag("Player"))
-        {
-            TryGetComponent<PlayerController>(out _player);
-        }
+        _OnInteract?.Invoke();
     }
 }
