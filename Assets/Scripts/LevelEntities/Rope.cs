@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Rope : MonoBehaviour, IClimbable
 {
+    [SerializeField] private float _moveDistance;
     public int Length {get;}
     private LineHandler _line;
     private void Start()
@@ -14,10 +15,4 @@ public class Rope : MonoBehaviour, IClimbable
         collider2D.size = new Vector2(.8f, _line.LineLenght);
         collider2D.offset = new Vector2(0.0f, -_line.LineLenght/2);
     }
-
-    private void FixedUpdate() 
-    {
-  
-    }
-    
 }
