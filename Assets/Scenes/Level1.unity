@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 39950248}
   - component: {fileID: 39950247}
   - component: {fileID: 39950246}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1142,6 +1142,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2095558505}
     m_Modifications:
+    - target: {fileID: 6070534654514680074, guid: 12f2f237aad8730468f731e6bc4aac7d,
+        type: 3}
+      propertyPath: _isOpen
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6070534654514680084, guid: 12f2f237aad8730468f731e6bc4aac7d,
         type: 3}
       propertyPath: m_Name

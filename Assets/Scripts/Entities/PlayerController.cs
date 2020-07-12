@@ -37,7 +37,6 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         GameObject obj = GameObject.FindGameObjectWithTag("LevelManager");
-        Debug.Log(obj.name);
         _level = obj.GetComponent<LevelManager>();
         _animator = GetComponentInChildren<Animator>();
     }
@@ -61,7 +60,6 @@ public class PlayerController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _inverseMoveTime = 1 / _moveTime;
-        Debug.Log("Aaaaaaaa");
         _firstInput = true;
     }
 
@@ -118,8 +116,6 @@ public class PlayerController : MonoBehaviour
             NextInput = _level.PlayerInputs.Dequeue();
             onNewNextInput?.Invoke();
             
-            Debug.Log(NextInput.MoveAmount);
-            
             // Wait for when the input should be called
             yield return new WaitForSeconds(NextInput.TimeBefore);
 
@@ -153,6 +149,7 @@ public class PlayerController : MonoBehaviour
         col = Physics2D.OverlapCircle(end, .3f, _blockingLayer);
         if (!col && toMove.y != 1)
         {
+            Debug.Log("Walk to :" + end);
             _animator.SetBool("Walk", true);
             StartCoroutine(SmoothMovement(end));
             transform.localScale = new Vector3(toMove.x, 1.0f, 1.0f);
@@ -193,10 +190,8 @@ public class PlayerController : MonoBehaviour
 
     private void InteractWith()
     {
-        Vector3 interactPosition = 
-            transform.position + new Vector3(transform.localScale.x, 0.0f, 0.0f);
         Collider2D col = Physics2D.OverlapCircle
-                            (interactPosition, 0.4f, LayerMask.GetMask("Interactable"));
+                            (transform.position, 0.4f, LayerMask.GetMask("Interactable"));
         if (col)
         {
             IInteractable interactable;
