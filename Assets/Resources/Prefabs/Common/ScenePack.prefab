@@ -189,6 +189,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3161834712912551457}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1947619406332695385 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3523576793002462584, guid: 76d87dabde4b51b44baf27f562655c8a,
+    type: 3}
+  m_PrefabInstance: {fileID: 3161834712912551457}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b86338e4edfae54c87b757452d17af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8371722864205567429
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -201,6 +213,16 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 7002467596927613554}
+    - target: {fileID: 4274072706017965694, guid: 764b543a645aa2e41bf9b2cb8019f125,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1947619406332695385}
+    - target: {fileID: 4274072706017965694, guid: 764b543a645aa2e41bf9b2cb8019f125,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadNextScene
+      objectReference: {fileID: 0}
     - target: {fileID: 4274072706233910708, guid: 764b543a645aa2e41bf9b2cb8019f125,
         type: 3}
       propertyPath: m_Name
