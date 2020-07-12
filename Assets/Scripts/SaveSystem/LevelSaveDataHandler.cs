@@ -7,6 +7,14 @@ public class LevelSaveDataHandler : MonoBehaviour
     private LevelSelect _levelSelected;
     private void Awake() 
     {
-        _levelSelected = GetComponent<LevelSelect>();    
+        _levelSelected = GetComponent<LevelSelect>();
+        if (SaveSystem.Current.Levels[_levelSelected.Level])
+        {
+            _levelSelected.Completed = true;
+        }
+        else
+        {
+            _levelSelected.Completed = false;
+        }
     }
 }
