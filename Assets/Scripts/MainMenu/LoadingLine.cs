@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class LoadingLine : MonoBehaviour
 {
-    private readonly Vector2 _delayRange = new Vector2(0.1f, 0.3f);
+    private readonly Vector2 _delayRange = new Vector2(0.02f, 0.3f);
     private readonly char[] _sequence = new char[8]
     {
         '|',
@@ -40,7 +40,10 @@ public class LoadingLine : MonoBehaviour
 
     private void UpdateText()
     {
-        _linePro.text = _sequence[_currIndex].ToString();
+        if (Random.Range(0.0f, 1f) > 0.15f)
+            _linePro.text = _sequence[_currIndex].ToString();
+        else
+            _linePro.text = ((char) ('A' + Random.Range(0, 128))).ToString();
     }
 
     private void OnDisable()
