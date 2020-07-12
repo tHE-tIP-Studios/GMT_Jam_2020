@@ -180,7 +180,7 @@ MonoBehaviour:
   m_text: Portal may be closed, press E to interact with a button
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dacf06281052a6f4698df4437bd948e4, type: 2}
-  m_sharedMaterial: {fileID: -3584082864632729748, guid: dacf06281052a6f4698df4437bd948e4,
+  m_sharedMaterial: {fileID: -3707693804634411240, guid: dacf06281052a6f4698df4437bd948e4,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -206,8 +206,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 42
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -252,7 +252,7 @@ MonoBehaviour:
     spaceCount: 10
     wordCount: 11
     linkCount: 0
-    lineCount: 2
+    lineCount: 1
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -1502,7 +1502,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1719,7 +1719,7 @@ PrefabInstance:
     - target: {fileID: 6070534654514680074, guid: 12f2f237aad8730468f731e6bc4aac7d,
         type: 3}
       propertyPath: _OnExit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6070534654514680074, guid: 12f2f237aad8730468f731e6bc4aac7d,
         type: 3}
@@ -1734,12 +1734,17 @@ PrefabInstance:
     - target: {fileID: 6070534654514680074, guid: 12f2f237aad8730468f731e6bc4aac7d,
         type: 3}
       propertyPath: _OnExit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ExitGame
+      value: LoadNextScene
       objectReference: {fileID: 0}
     - target: {fileID: 6070534654514680074, guid: 12f2f237aad8730468f731e6bc4aac7d,
         type: 3}
       propertyPath: _OnExit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6070534654514680074, guid: 12f2f237aad8730468f731e6bc4aac7d,
+        type: 3}
+      propertyPath: _OnExit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: ThankYou
       objectReference: {fileID: 0}
     - target: {fileID: 6070534654514680084, guid: 12f2f237aad8730468f731e6bc4aac7d,
         type: 3}
