@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
         get => _timeout > 0;
         set
         {
-            _timeout = .4f;
+            _timeout = .75f;
         }
     }
     public InputData NextInput { get; set; }
@@ -174,7 +174,7 @@ public class PlayerController : MonoBehaviour
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
         //While that distance is greater than a very small amount (Epsilon, almost zero):
-        while (sqrRemainingDistance > float.Epsilon)
+        while (sqrRemainingDistance > 0f)
         {
             //Find a new position proportionally closer to the end, based on the moveTime
             Vector3 newPostion = Vector3.MoveTowards(_rb.position, end, _inverseMoveTime * Time.deltaTime);
@@ -188,6 +188,7 @@ public class PlayerController : MonoBehaviour
             //Return and loop until sqrRemainingDistance is close enough to zero to end the function
             yield return null;
         }
+        _rb.MovePosition(end);
     }
 
     private void InteractWith()
