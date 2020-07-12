@@ -149,10 +149,12 @@ public class PlayerController : MonoBehaviour
         col = Physics2D.OverlapCircle(end, .3f, _blockingLayer);
         if (!col && toMove.y != 1)
         {
-            Debug.Log("Walk to :" + end);
             _animator.SetBool("Walk", true);
             StartCoroutine(SmoothMovement(end));
-            transform.localScale = new Vector3(toMove.x, 1.0f, 1.0f);
+            if (toMove.x < 0)
+                transform.rotation = Quaternion.Euler(0.0f, 180f, 0.0f);
+            if (toMove.x > 0)
+                transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         }
         else if (col)
         {
