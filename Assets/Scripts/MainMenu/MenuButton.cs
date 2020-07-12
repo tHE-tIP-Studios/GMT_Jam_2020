@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MenuButton : MonoBehaviour
-{ 
+{
     [SerializeField] private char _selectionPrefix = '>';
     [SerializeField] private TextMeshProUGUI _textPro = default;
+
+    private EventTrigger _eventTrigger;
 
     public void OnSelected()
     {

@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class LoadingLine : MonoBehaviour
 {
-    private readonly Vector2 _delayRange = new Vector2(0.1f, 0.3f);
+    private readonly Vector2 _delayRange = new Vector2(0.05f, 0.3f);
     private readonly char[] _sequence = new char[8]
     {
         '|',
