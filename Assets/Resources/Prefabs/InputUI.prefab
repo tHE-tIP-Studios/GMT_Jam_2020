@@ -168,8 +168,9 @@ GameObject:
   - component: {fileID: 7750126202954237504}
   - component: {fileID: 4367611216393688872}
   - component: {fileID: 5618381727214632632}
+  - component: {fileID: 2389677696386294203}
   m_Layer: 5
-  m_Name: Input
+  m_Name: InputUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -233,6 +234,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2389677696386294203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2201658380227215063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8551b4a1da88c5948828b10e8b168d9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeImage: {fileID: 6508027406817670754}
+  _inputImage: {fileID: 540500780368684769}
+  _uiInfo: {fileID: 11400000, guid: 35e7f3b5cfbd98044ab1d77cdf3e506c, type: 2}
 --- !u!1 &4149448447907630155
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,7 +337,7 @@ GameObject:
   - component: {fileID: 1097197745705836609}
   - component: {fileID: 540500780368684769}
   m_Layer: 5
-  m_Name: Image
+  m_Name: InputImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

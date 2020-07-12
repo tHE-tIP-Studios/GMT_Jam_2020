@@ -6,12 +6,14 @@ using System;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] private int _inputsAmount;
-    [SerializeField] private PlayerController _playerPrefab;
-    [SerializeField] private Transform _levelSpawn;
-    [SerializeField] private InputUI _inputUIPrefab;
+    [SerializeField] private int _inputsAmount = default;
+    [SerializeField] private PlayerController _playerPrefab = default;
+    [SerializeField] private Transform _levelSpawn = default;
+    [SerializeField] private InputUI _inputUIPrefab = default;
+    [SerializeField] private RectTransform _inputPanel = default;
     private PlayerController _currentPlayer;
     private Queue<InputData> _playerInputs;
+    private int _currentComand;
     [Tooltip("called when the turn for the player to pick his actions ends")]
     public UnityEngine.Events.UnityEvent OnTurnSwitch;
     public bool PlayerTurn {get; private set;}
@@ -25,7 +27,6 @@ public class LevelManager : MonoBehaviour
             return _playerInputs;
         }
     }
-
     public int InputsAmount 
     {
         get
@@ -53,11 +54,13 @@ public class LevelManager : MonoBehaviour
         PlayerTurn = true;
         _currentPlayer = Instantiate(_playerPrefab, _levelSpawn.position, _levelSpawn.rotation);
         _currentPlayer.onNewInput += NewInputUI;
+        _currentPlayer.onNewNextInput += RunUI;
     }
 
     private void NewInputUI(InputData data)
     {
-
+        InputUI ui = Instantiate(_inputUIPrefab, _inputPanel);
+        ui.SetInfo(data);
     }
 
     private void Update() 
@@ -73,18 +76,45 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Call to start the player movement
+    /// </summary>
     public void RunLevel()
     {
         if (CurrentInputs < InputsAmount) return;
         _currentPlayer.Run();
     }
 
+    private void RunUI()
+    {
+        InputUI ui;
+        ui = _inputPanel.GetChild(_currentComand).GetComponent<InputUI>();
+        ui.StartCountdown();
+        _currentComand++;
+    }
+
+    /// <summary>
+    /// Call this when the player dies or he cant reach the goal in the number of actions
+    /// </summary>
     public void ResetLevel()
     {
         _currentPlayer.onNewInput -= NewInputUI;
+        _currentPlayer.onNewNextInput -= RunUI;
+        foreach(Transform t in _inputPanel.transform)
+        {
+            Destroy(t.gameObject);
+        }
+
+        _currentPlayer.StopAllCoroutines();
         Destroy(_currentPlayer.gameObject);
+
         _currentPlayer = Instantiate(_playerPrefab, _levelSpawn.position, _levelSpawn.rotation);
+        _currentPlayer.onNewInput += NewInputUI;
+        _currentPlayer.onNewNextInput += RunUI;
+
         _playerInputs.Clear();
+        _currentComand = 0;
+
         onLevelReset?.Invoke();
     }
 
