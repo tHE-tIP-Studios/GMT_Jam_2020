@@ -7,6 +7,8 @@ public class ShockTrap : Trap
     /// </summary>
     public override void TrapActivation(PlayerController player)
     {
+        print(player.name);
+        print(player.NextInput);
         InputData trapInput = new InputData(
             -player.NextInput.MoveAmount, player.NextInput.TimeBefore,
             player.NextInput.onInput, player.NextInput.Type);
@@ -23,7 +25,7 @@ public class ShockTrap : Trap
     {
         if(other.CompareTag("Player"))
         {
-            PlayerController p = GetComponent<PlayerController>();
+            PlayerController p = other.GetComponent<PlayerController>();
             OnPlayerEnter?.Invoke();
             TrapActivation(p);
         }
